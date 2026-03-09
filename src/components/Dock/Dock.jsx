@@ -81,10 +81,10 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
               });
             }}
           />
-          {minimized?.some((m) => m.name === "projects") ||
-            (windows?.some((m) => m.name === "projects") && (
+          {((minimized?.some((m) => m.name === "projects")) ||
+            (windows?.some((m) => m.name === "projects"))) && (
               <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
-            ))}
+            )}
         </div>
 
         <div
@@ -107,10 +107,10 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
               });
             }}
           />
-          {minimized?.some((m) => m.name === "terminal") ||
-            (windows?.some((m) => m.name === "terminal") && (
+          {((minimized?.some((m) => m.name === "terminal")) ||
+            (windows?.some((m) => m.name === "terminal"))) && (
               <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
-            ))}
+            )}
         </div>
 
         <div
@@ -130,10 +130,10 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
               });
             }}
           />
-          {minimized?.some((m) => m.name === "about") ||
-            (windows?.some((m) => m.name === "about") && (
+          {((minimized?.some((m) => m.name === "about")) ||
+            (windows?.some((m) => m.name === "about")) )&& (
               <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
-            ))}
+            )}
         </div>
         <div
           className={`flex flex-col items-center transition-transform duration-200 hover:scale-125 ${activeIcon === "resume" ? "animate-bounce" : ""}`}
@@ -154,10 +154,10 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
               });
             }}
           />
-          {minimized?.some((m) => m.name === "resume") ||
-            (windows?.some((m) => m.name === "resume") && (
+          {((minimized?.some((m) => m.name === "resume")) ||
+            (windows?.some((m) => m.name === "resume")) )&& (
               <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
-            ))}
+            )}
         </div>
 
         {[

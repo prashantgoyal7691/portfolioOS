@@ -24,7 +24,7 @@ function Window({ title, onClose, onMinimize,children,isFocused, onFocus, x = 16
           setContextMenu({ x: e.clientX, y: e.clientY });
         }}
         style={isMaximized ? { top: 0, left: 0 } : { top: y, left: x }}
-        className={`window absolute flex flex-col transition-all duration-300 ease-out
+        className={`window absolute flex flex-col transition-all duration-300 ease-out rounded-xl
   ${isFocused ? "window-active" : ""}
   ${isMaximized ? "top-0 mt-7 left-0 w-full h-full rounded-none" : "w-[520px] h-[350px]"}
   ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}

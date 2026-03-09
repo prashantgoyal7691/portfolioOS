@@ -85,6 +85,7 @@ function Desktop() {
 
   const closeWindow = (name) => {
     setWindows((prev) => prev.filter((w) => w.name !== name));
+    setMinimized((prev) => prev.filter((m) => m.name !== name));
   };
 
   const focusWindow = (name) => {

@@ -14,25 +14,6 @@ function Window({ title, onClose, onMinimize,children,isFocused, onFocus, x = 16
     const t = setTimeout(() => setIsOpen(true), 10);
     return () => clearTimeout(t);
   }, []);
-
-
-  // Close context menu when clicking outside the window
-  useEffect(() => {
-    if (!contextMenu) return;
-
-    const handleClickOutside = (e) => {
-      if (nodeRef.current && !nodeRef.current.contains(e.target)) {
-        setContextMenu(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [contextMenu]);
-
   return (
     <Draggable handle=".window-header" nodeRef={nodeRef}>
       <div
@@ -45,7 +26,7 @@ function Window({ title, onClose, onMinimize,children,isFocused, onFocus, x = 16
         style={isMaximized ? { top: 0, left: 0 } : { top: y, left: x }}
         className={`window absolute flex flex-col transition-all duration-300 ease-out
   ${isFocused ? "window-active" : ""}
-  ${isMaximized ? "top-0 left-0 w-full h-full rounded-none" : "w-[520px] h-[350px]"}
+  ${isMaximized ? "top-0 mt-7 left-0 w-full h-full rounded-none" : "w-[520px] h-[350px]"}
   ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}
   bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl`}
       >
@@ -95,36 +76,6 @@ function Window({ title, onClose, onMinimize,children,isFocused, onFocus, x = 16
         </div>
 
         <div className="p-6 flex-1 overflow-y-auto text-white">{children}</div>
-
-        {contextMenu && (
-          <div
-            style={{
-              position: "fixed",
-              top: contextMenu.y,
-              left: contextMenu.x
-            }}
-            className="bg-black/90 border border-white/20 rounded shadow-lg text-sm z-50"
-          >
-            <div
-              className="px-4 py-2 hover:bg-white/10 cursor-pointer"
-              onClick={() => {
-                window.dispatchEvent(new Event("duplicate-window"));
-                setContextMenu(null);
-              }}
-            >
-              Duplicate Window
-            </div>
-            <div
-              className="px-4 py-2 hover:bg-red-500/30 cursor-pointer text-red-400"
-              onClick={() => {
-                setContextMenu(null);
-                onClose();
-              }}
-            >
-              Exit
-            </div>
-          </div>
-        )}
       </div>
     </Draggable>
   );

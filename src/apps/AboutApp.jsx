@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import TypingText from "../components/ui/TypingText";
 
 function AboutApp() {
-
   const sections = [
     {
       type: "title",

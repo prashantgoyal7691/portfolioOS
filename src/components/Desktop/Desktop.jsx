@@ -6,8 +6,6 @@ import Dock from "../Dock/Dock";
 import MenuBar from "../MenuBar/MenuBar";
 import MatrixBackground from "../Background/MatrixBackground";
 import TerminalApp from "../../apps/TerminalApp";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import AboutApp from "../../apps/AboutApp";
 import SkillsApp from "../../apps/SkillsApp";
 import ProjectsApp from "../../apps/ProjectsApp";
@@ -33,21 +31,21 @@ function Desktop() {
     };
   });
 
-  const minimizeWindow = (id) => {
+  const minimizeWindow = (name) => {
     setWindows((prev) => {
-      const win = prev.find((w) => w.id === id);
+      const win = prev.find((w) => w.name === name);
       if (!win) return prev;
       setMinimized((m) => [...m, win]);
-      return prev.filter((w) => w.id !== id);
+      return prev.filter((w) => w.name !== name);
     });
   };
 
-  const restoreWindow = (id) => {
+  const restoreWindow = (name) => {
     setMinimized((prev) => {
-      const win = prev.find((m) => m.id === id);
+      const win = prev.find((m) => m.name === name);
       if (!win) return prev;
       setWindows((w) => [...w, win]);
-      return prev.filter((m) => m.id !== id);
+      return prev.filter((m) => m.name !== name);
     });
   };
 
@@ -77,7 +75,6 @@ function Desktop() {
       return [
         ...prev,
         {
-          id: Date.now(),
           name,
           x: 160 + offset,
           y: 120 + offset,
@@ -86,54 +83,24 @@ function Desktop() {
     });
   };
 
-  const closeWindow = (id) => {
-    setWindows((prev) => prev.filter((w) => w.id !== id));
+  const closeWindow = (name) => {
+    setWindows((prev) => prev.filter((w) => w.name !== name));
   };
 
-  const focusWindow = (id) => {
+  const focusWindow = (name) => {
     setWindows((prev) => {
-      const target = prev.find((w) => w.id === id);
+      const target = prev.find((w) => w.name === name);
       if (!target) return prev;
 
-      const others = prev.filter((w) => w.id !== id);
+      const others = prev.filter((w) => w.name !== name);
 
       return [...others, target];
     });
   };
-  const duplicateWindow = () => {
-    setWindows((prev) => {
-      if (prev.length === 0) return prev;
-
-      // last window in array = focused window
-      const active = prev[prev.length - 1];
-
-      const offset = prev.length * 30;
-
-      return [
-        ...prev,
-        {
-          id: Date.now(),
-          name: active.name,
-          x: active.x + 40,
-          y: active.y + 40,
-        },
-      ];
-    });
-  };
-
-  useEffect(() => {
-    const handler = () => duplicateWindow();
-
-    window.addEventListener("duplicate-window", handler);
-
-    return () => {
-      window.removeEventListener("duplicate-window", handler);
-    };
-  }, []);
   return (
     <div className="h-screen w-full bg-[#050505] relative m-0">
       <MatrixBackground />
-      <MenuBar />
+      <MenuBar openWindow={openWindow} />
       <div className="absolute  w-full h-full m-0 p-10">
         <Draggable
           bounds="parent"
@@ -171,6 +138,7 @@ function Desktop() {
               type="folder"
               label="Skills"
               onOpen={() => openWindow("skills")}
+
             />
           </div>
         </Draggable>
@@ -188,7 +156,7 @@ function Desktop() {
         >
           <div ref={aboutRef} className="absolute">
             <DesktopIcon
-              type="folder"
+              type="about"
               label="About"
               onOpen={() => openWindow("about")}
             />
@@ -248,7 +216,7 @@ function Desktop() {
         >
           <div ref={contactRef} className="absolute">
             <DesktopIcon
-              type="folder"
+              type="contact"
               label="Contact"
               onOpen={() => openWindow("contact")}
             />
@@ -270,7 +238,7 @@ function Desktop() {
             <DesktopIcon
               type="folder"
               label="Education"
-              onOpen={() => openWindow("Education")}
+              onOpen={() => openWindow("education")}
             />
           </div>
         </Draggable>
@@ -280,14 +248,14 @@ function Desktop() {
         if (win.name === "projects") {
           return (
             <Window
-              key={win.id}
+              key={win.name}
               title="Projects"
               x={win.x}
               y={win.y}
               isFocused={index === windows.length - 1}
-              onClose={() => closeWindow(win.id)}
-              onFocus={() => focusWindow(win.id)}
-              onMinimize={() => minimizeWindow(win.id)}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
             >
               <ProjectsApp />
             </Window>
@@ -297,14 +265,14 @@ function Desktop() {
         if (win.name === "skills") {
           return (
             <Window
-              key={win.id}
+              key={win.name}
               title="Skills"
               x={win.x}
               y={win.y}
               isFocused={index === windows.length - 1}
-              onClose={() => closeWindow(win.id)}
-              onFocus={() => focusWindow(win.id)}
-              onMinimize={() => minimizeWindow(win.id)}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
             >
               <SkillsApp />
             </Window>
@@ -314,14 +282,14 @@ function Desktop() {
         if (win.name === "terminal") {
           return (
             <Window
-              key={win.id}
+              key={win.name}
               title="Terminal"
               x={win.x}
               y={win.y}
               isFocused={index === windows.length - 1}
-              onClose={() => closeWindow(win.id)}
-              onFocus={() => focusWindow(win.id)}
-              onMinimize={() => minimizeWindow(win.id)}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
             >
               <TerminalApp openWindow={openWindow} />
             </Window>
@@ -331,14 +299,14 @@ function Desktop() {
         if (win.name === "about") {
           return (
             <Window
-              key={win.id}
+              key={win.name}
               title="About Me"
               x={win.x}
               y={win.y}
               isFocused={index === windows.length - 1}
-              onClose={() => closeWindow(win.id)}
-              onFocus={() => focusWindow(win.id)}
-              onMinimize={() => minimizeWindow(win.id)}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
             >
               <AboutApp />
             </Window>
@@ -348,14 +316,14 @@ function Desktop() {
         if (win.name === "resume") {
           return (
             <Window
-              key={win.id}
+              key={win.name}
               title="Resume"
               x={win.x}
               y={win.y}
               isFocused={index === windows.length - 1}
-              onClose={() => closeWindow(win.id)}
-              onFocus={() => focusWindow(win.id)}
-              onMinimize={() => minimizeWindow(win.id)}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
             >
               <iframe
                 src="/resume.pdf#toolbar=0&navpanes=0&scrollbar=0"
@@ -369,33 +337,59 @@ function Desktop() {
         if (win.name === "contact") {
           return (
             <Window
-              key={win.id}
+              key={win.name}
               title="Contact"
               x={win.x}
               y={win.y}
               isFocused={index === windows.length - 1}
-              onClose={() => closeWindow(win.id)}
-              onFocus={() => focusWindow(win.id)}
-              onMinimize={() => minimizeWindow(win.id)}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
             >
               <ContactApp />
             </Window>
           );
         }
 
-        if (win.name === "Education") {
+        if (win.name === "education") {
           return (
             <Window
-              key={win.id}
+              key={win.name}
               title="Education"
               x={win.x}
               y={win.y}
               isFocused={index === windows.length - 1}
-              onClose={() => closeWindow(win.id)}
-              onFocus={() => focusWindow(win.id)}
-              onMinimize={() => minimizeWindow(win.id)}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
             >
               <EducationApp />
+            </Window>
+          );
+        }
+
+        if (win.name === "system") {
+          return (
+            <Window
+              key={win.name}
+              title="About This Portfolio"
+              x={win.x}
+              y={win.y}
+              isFocused={index === windows.length - 1}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
+            >
+              <div className="text-gray-300 space-y-2">
+                <h2 className="text-lg font-semibold text-white">
+                  portfolioOS
+                </h2>
+
+                <p>Version: 1.0</p>
+                <p>Developer: Prashant Goyal</p>
+                <p>Stack: React + Tailwind + Vite</p>
+                <p>UI: macOS Inspired Desktop Portfolio</p>
+              </div>
             </Window>
           );
         }
@@ -405,6 +399,7 @@ function Desktop() {
         minimized={minimized}
         windows={windows}
         restoreWindow={restoreWindow}
+        closeWindow={closeWindow}
       />
     </div>
   );

@@ -1,14 +1,19 @@
-function DockIcon({ icon, label, onClick }) {
+import React from "react";
+import { useState } from "react";
+
+function DockIcon({ icon, label, onClick, onContextMenu, hideLabel }) {
   return (
     <div
       className="relative flex flex-col items-center group cursor-pointer"
       onClick={onClick}
+      onContextMenu={onContextMenu}
     >
       {icon}
-
-      <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition text-xs text-white bg-black/80 px-2 py-1 rounded whitespace-nowrap z-50">
-        {label}
-      </div>
+      {!hideLabel && (
+        <div className="absolute -top-8 opacity-0 group-hover:opacity-100 transition text-xs bg-black/80 px-2 py-1 rounded">
+          {label}
+        </div>
+      )}
     </div>
   );
 }

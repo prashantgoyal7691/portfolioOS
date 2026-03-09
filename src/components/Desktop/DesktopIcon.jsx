@@ -1,13 +1,14 @@
-import { FaFolder, FaTerminal, FaFileAlt } from "react-icons/fa";
+import { FaFolder, FaTerminal, FaFileAlt ,FaUser,FaAddressCard} from "react-icons/fa";
 
 function DesktopIcon({ type, label, onOpen }) {
 
   const iconMap = {
-    folder: <FaFolder size={40} />,
-    terminal: <FaTerminal size={40} />,
-    file: <FaFileAlt size={40} />
+    folder: <FaFolder size={40} color="#3b82f6"/>,
+    terminal: <FaTerminal size={40} color="#04DF72" />,
+    file: <FaFileAlt size={40} />,
+    about: <FaUser size={40} color="#22d3ee"/>,
+    contact: <FaAddressCard size={40}/>
   };
-
   return (
     <div
       onDoubleClick={onOpen}

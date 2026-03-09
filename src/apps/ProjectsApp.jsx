@@ -27,24 +27,25 @@ function ProjectsApp() {
     {
       uri: "portfolioOS",
       desc: "An operating-system styled developer portfolio with interactive windows, dock, and app-like navigation.",
-      view: "",
+      view: "https://portfolioospg.netlify.app/",
     },
 
     {
       uri: "Kota-Metro-Planner",
       desc: "A metro route planning tool that helps users find optimal paths, stations, and travel information for Kota Metro.",
-      view: "",
+      view: "https://cerulean-lily-2a57ca.netlify.app/",
     },
 
     {
       uri: "Dr-Br-Ambedkar-Main",
       desc: "An informational website dedicated to Dr. B. R. Ambedkar showcasing his life, contributions, and legacy.",
-      view: "",
+      view: "https://ambedkar-rag-backend.vercel.app/",
     },
 
     {
       uri: "Ludo-Dice-Game",
       desc: "A digital implementation of the classic Ludo board game with dice mechanics and interactive gameplay.",
+      view:"https://ludodice-game.netlify.app/"
     },
   ];
 
@@ -72,6 +73,13 @@ function ProjectsApp() {
               className="text-blue-400 hover:underline"
             >
               GitHub
+            </a>
+            <a
+              href={`${repo.view}`}
+              target="_blank"
+              className="text-blue-400 hover:underline"
+            >
+              View
             </a>
           </div>
         </div>

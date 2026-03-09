@@ -1,7 +1,7 @@
 import Draggable from "react-draggable";
 import { useRef, useState, useEffect } from "react";
 
-function Window({ title, onClose, children,isFocused, onFocus, x = 160, y = 120 }) {
+function Window({ title, onClose, onMinimize,children,isFocused, onFocus, x = 160, y = 120 }) {
   const nodeRef = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -68,7 +68,8 @@ function Window({ title, onClose, children,isFocused, onFocus, x = 160, y = 120 
 
             {/* Minimize */}
             <div
-              className="w-3 h-3 bg-yellow-400 rounded-full 
+              onClick={onMinimize}
+              className="w-3 h-3 bg-yellow-400 rounded-full cursor-pointer
     flex items-center justify-center text-[10px] text-black
     transition-transform duration-150 hover:scale-110"
             >

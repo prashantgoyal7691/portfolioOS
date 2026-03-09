@@ -9,7 +9,7 @@ function MenuBar() {
     >
       {/* Left Side */}
       <div className="flex gap-6">
-        <span className="font-semibold">PrashantOS</span>
+        <span className="font-semibold">portfolioOS</span>
 
         <span className="cursor-pointer hover:text-gray-300">File</span>
         <span className="cursor-pointer hover:text-gray-300">Edit</span>

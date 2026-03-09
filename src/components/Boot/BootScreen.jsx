@@ -46,12 +46,20 @@ function BootScreen({ onFinish }) {
       <div className="flex mt-2">
         <span className="mr-2">{">"}</span>
 
-        <input
+        {/* <input
           autoFocus
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="bg-transparent outline-none text-green-400 w-full"
+          className="bg-transparent outline-none text-green-400 w-full h-full"
+        /> */}
+
+        <textarea
+          autoFocus
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className="bg-transparent outline-none text-green-400 w-full h-[100vh]"
         />
       </div>
 

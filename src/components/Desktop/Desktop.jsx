@@ -16,6 +16,7 @@ import EducationApp from "../../apps/EducationApp";
 
 function Desktop() {
   const [windows, setWindows] = useState([]);
+  const [minimized, setMinimized] = useState([]);
 
   const [iconPositions, setIconPositions] = useState(() => {
     const saved = localStorage.getItem("desktop-icon-positions");
@@ -32,10 +33,28 @@ function Desktop() {
     };
   });
 
+  const minimizeWindow = (id) => {
+    setWindows((prev) => {
+      const win = prev.find((w) => w.id === id);
+      if (!win) return prev;
+      setMinimized((m) => [...m, win]);
+      return prev.filter((w) => w.id !== id);
+    });
+  };
+
+  const restoreWindow = (id) => {
+    setMinimized((prev) => {
+      const win = prev.find((m) => m.id === id);
+      if (!win) return prev;
+      setWindows((w) => [...w, win]);
+      return prev.filter((m) => m.id !== id);
+    });
+  };
+
   useEffect(() => {
     localStorage.setItem(
       "desktop-icon-positions",
-      JSON.stringify(iconPositions)
+      JSON.stringify(iconPositions),
     );
   }, [iconPositions]);
 
@@ -48,6 +67,10 @@ function Desktop() {
   const educationRef = useRef(null);
 
   const openWindow = (name) => {
+    const alreadyOpen = windows.some((w) => w.name === name);
+
+    if (alreadyOpen) return;
+
     setWindows((prev) => {
       const offset = prev.length * 30;
 
@@ -108,10 +131,10 @@ function Desktop() {
     };
   }, []);
   return (
-    <div className="h-screen w-full bg-[#050505] relative">
+    <div className="h-screen w-full bg-[#050505] relative m-0">
       <MatrixBackground />
       <MenuBar />
-      <div className="absolute top-10 left-10 w-full h-full relative">
+      <div className="absolute  w-full h-full m-0 p-10">
         <Draggable
           bounds="parent"
           nodeRef={projectsRef}
@@ -264,6 +287,7 @@ function Desktop() {
               isFocused={index === windows.length - 1}
               onClose={() => closeWindow(win.id)}
               onFocus={() => focusWindow(win.id)}
+              onMinimize={() => minimizeWindow(win.id)}
             >
               <ProjectsApp />
             </Window>
@@ -280,6 +304,7 @@ function Desktop() {
               isFocused={index === windows.length - 1}
               onClose={() => closeWindow(win.id)}
               onFocus={() => focusWindow(win.id)}
+              onMinimize={() => minimizeWindow(win.id)}
             >
               <SkillsApp />
             </Window>
@@ -296,6 +321,7 @@ function Desktop() {
               isFocused={index === windows.length - 1}
               onClose={() => closeWindow(win.id)}
               onFocus={() => focusWindow(win.id)}
+              onMinimize={() => minimizeWindow(win.id)}
             >
               <TerminalApp openWindow={openWindow} />
             </Window>
@@ -312,6 +338,7 @@ function Desktop() {
               isFocused={index === windows.length - 1}
               onClose={() => closeWindow(win.id)}
               onFocus={() => focusWindow(win.id)}
+              onMinimize={() => minimizeWindow(win.id)}
             >
               <AboutApp />
             </Window>
@@ -328,6 +355,7 @@ function Desktop() {
               isFocused={index === windows.length - 1}
               onClose={() => closeWindow(win.id)}
               onFocus={() => focusWindow(win.id)}
+              onMinimize={() => minimizeWindow(win.id)}
             >
               <iframe
                 src="/resume.pdf#toolbar=0&navpanes=0&scrollbar=0"
@@ -348,6 +376,7 @@ function Desktop() {
               isFocused={index === windows.length - 1}
               onClose={() => closeWindow(win.id)}
               onFocus={() => focusWindow(win.id)}
+              onMinimize={() => minimizeWindow(win.id)}
             >
               <ContactApp />
             </Window>
@@ -364,13 +393,19 @@ function Desktop() {
               isFocused={index === windows.length - 1}
               onClose={() => closeWindow(win.id)}
               onFocus={() => focusWindow(win.id)}
+              onMinimize={() => minimizeWindow(win.id)}
             >
               <EducationApp />
             </Window>
           );
         }
       })}
-      <Dock openWindow={openWindow} />
+      <Dock
+        openWindow={openWindow}
+        minimized={minimized}
+        windows={windows}
+        restoreWindow={restoreWindow}
+      />
     </div>
   );
 }

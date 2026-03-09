@@ -49,6 +49,7 @@ function TerminalApp({ openWindow }) {
   const [mode, setMode] = useState("shell"); // shell | python
   const [pythonVars, setPythonVars] = useState({});
   const terminalRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     if (terminalRef.current) {
@@ -273,6 +274,7 @@ python`;
 
   return (
     <div
+      onClick={() => inputRef.current && inputRef.current.focus()}
       ref={terminalRef}
       className="bg-black text-green-400 font-mono h-full flex flex-col overflow-y-auto p-4 whitespace-pre-wrap"
     >
@@ -284,13 +286,14 @@ python`;
         <span className="mr-2 text-green-300">
           {mode === "python" ? ">>>" : `prashantOS:${cwd}$`}
         </span>
-
-        <input
+      <input
+          ref={inputRef}
           className="bg-transparent outline-none flex-1"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
         />
+        
       </div>
     </div>
   );

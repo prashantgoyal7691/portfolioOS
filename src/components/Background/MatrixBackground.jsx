@@ -52,7 +52,7 @@ function MatrixBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-0 left-0 w-full h-full backdrop-blur-[2px] opacity-30"
+      className="absolute top-0 left-0 w-full h-full backdrop-blur-[2px] opacity-30 m-0"
     />
   );
 }

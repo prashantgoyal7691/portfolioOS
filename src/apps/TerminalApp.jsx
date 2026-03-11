@@ -38,7 +38,7 @@ Instagram: www.instagram.com/prashant_goyal19`,
 
 function TerminalApp({ openWindow }) {
   const [history, setHistory] = useState([
-    "Welcome to PrashantOS Terminal",
+    "Welcome to portfolioOS Terminal",
     "Type 'help' to see available commands.",
   ]);
 
@@ -284,7 +284,7 @@ python`;
 
       <div className="flex">
         <span className="mr-2 text-green-300">
-          {mode === "python" ? ">>>" : `prashantOS:${cwd}$`}
+          {mode === "python" ? ">>>" : `portfolioOS:${cwd}$`}
         </span>
       <input
           ref={inputRef}

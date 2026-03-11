@@ -1,26 +1,24 @@
-import { FaFolder, FaTerminal, FaFileAlt ,FaUser,FaAddressCard} from "react-icons/fa";
+import { info } from "autoprefixer";
+import { Folder, TerminalWindow, MusicNotes, User, Envelope, FileText, GraduationCap } from "phosphor-react";
 
 function DesktopIcon({ type, label, onOpen }) {
-
   const iconMap = {
-    folder: <FaFolder size={40} color="#3b82f6"/>,
-    terminal: <FaTerminal size={40} color="#04DF72" />,
-    file: <FaFileAlt size={40} />,
-    about: <FaUser size={40} color="#22d3ee"/>,
-    contact: <FaAddressCard size={40}/>
+    folder: <Folder size={48} color="#60a5fa" />,
+    terminal: <TerminalWindow size={48} color="#22c55e" />,
+    songs: <MusicNotes size={48} color="#aabbdd" />,
+    about: <User size={48} color="#06b6d4" />,
+    contact: <Envelope size={48} color="#94a3b8" />,
+    file: <FileText size={48} color="#e5e7eb" />,
+    Info: <GraduationCap size={48} color="#a78bfa" />,
   };
   return (
     <div
       onDoubleClick={onOpen}
       className="flex flex-col items-center cursor-pointer select-none hover:scale-110 transition duration-200"
     >
-      <div className="text-white">
-        {iconMap[type]}
-      </div>
+      <div className="text-white">{iconMap[type]}</div>
 
-      <p className="text-sm mt-2 text-white text-center">
-        {label}
-      </p>
+      <p className="text-sm mt-2 text-white text-center">{label}</p>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import DockIcon from "./DockIcon";
 import { FaFolder, FaTerminal, FaFileAlt, FaUser } from "react-icons/fa";
 
-function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
+function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow ,minimizeWindow }) {
   const [showDock, setShowDock] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
   const runningApps = [...windows, ...minimized];
@@ -32,11 +32,11 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
     setTimeout(() => {
       action();
       setOpeningApps((prev) => prev.filter((app) => app !== name));
-    }, 1000);
+    }, 1500);
 
     setTimeout(() => {
       setActiveIcon(null);
-    }, 1000);
+    }, 1500);
   };
 
   useEffect(() => {
@@ -44,6 +44,17 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
     window.addEventListener("click", closeMenu);
     return () => window.removeEventListener("click", closeMenu);
   }, []);
+
+  const getAppState = (name) => {
+    const isOpen = windows.some((w) => w.name === name);
+    const isMinimized = minimized.some((m) => m.name === name);
+
+    if (isOpen) return "open";
+    if (isMinimized) return "minimized";
+    return "closed";
+  };
+
+  const state = dockMenu ? getAppState(dockMenu.name) : null;
 
   return (
     <>
@@ -81,10 +92,10 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
               });
             }}
           />
-          {((minimized?.some((m) => m.name === "projects")) ||
-            (windows?.some((m) => m.name === "projects"))) && (
-              <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
-            )}
+          {(minimized?.some((m) => m.name === "projects") ||
+            windows?.some((m) => m.name === "projects")) && (
+            <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
+          )}
         </div>
 
         <div
@@ -107,10 +118,10 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
               });
             }}
           />
-          {((minimized?.some((m) => m.name === "terminal")) ||
-            (windows?.some((m) => m.name === "terminal"))) && (
-              <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
-            )}
+          {(minimized?.some((m) => m.name === "terminal") ||
+            windows?.some((m) => m.name === "terminal")) && (
+            <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
+          )}
         </div>
 
         <div
@@ -130,10 +141,10 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
               });
             }}
           />
-          {((minimized?.some((m) => m.name === "about")) ||
-            (windows?.some((m) => m.name === "about")) )&& (
-              <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
-            )}
+          {(minimized?.some((m) => m.name === "about") ||
+            windows?.some((m) => m.name === "about")) && (
+            <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
+          )}
         </div>
         <div
           className={`flex flex-col items-center transition-transform duration-200 hover:scale-125 ${activeIcon === "resume" ? "animate-bounce" : ""}`}
@@ -154,10 +165,10 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
               });
             }}
           />
-          {((minimized?.some((m) => m.name === "resume")) ||
-            (windows?.some((m) => m.name === "resume")) )&& (
-              <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
-            )}
+          {(minimized?.some((m) => m.name === "resume") ||
+            windows?.some((m) => m.name === "resume")) && (
+            <div className="w-1.5 h-1.5 mt-1 rounded-full bg-white/80"></div>
+          )}
         </div>
 
         {[
@@ -199,44 +210,56 @@ function Dock({ openWindow, minimized, restoreWindow, windows, closeWindow }) {
         <div
           style={{
             position: "fixed",
-            top: dockMenu.y - 110,
-            left: dockMenu.x-30,
+            top: state === "closed" ? dockMenu.y - 70 : dockMenu.y - 110,
+            left: dockMenu.x - 30,
           }}
-          className="bg-black/40 border border-white/10 rounded-md text-sm w-32 z-50"
+          className="bg-black/0 border border-white/10 rounded-md text-sm w-32 z-50"
         >
-          <div
-            className="px-3 py-2 hover:bg-blue-500/30 cursor-pointer text-grey-400"
-            onClick={() => {
-              const name = dockMenu.name;
-
-              const minimizedWindow = minimized.find((m) => m.name === name);
-              const openWindowExists = windows.find((w) => w.name === name);
-
-              if (minimizedWindow) {
-                restoreWindow(name);
-              } else if (!openWindowExists) {
-                openWindow(name);
-              }
-
-              setDockMenu(null);
-            }}
-          >
-            Open
-          </div>
-
-          <div
-            className="px-3 py-2 hover:bg-blue-500/30 cursor-pointer text-grey-400"
-            onClick={() => {
-              const name = dockMenu.name;
-
-              // close window
-              closeWindow(name);
-
-              setDockMenu(null);
-            }}
-          >
-            Quit
-          </div>
+          {state === "closed" && (
+            <div
+              className="px-3 py-2 hover:bg-blue-500/30 cursor-pointer"
+              onClick={() => {
+                openWindow(dockMenu.name);
+                setDockMenu(null);
+              }}
+            >
+              Open
+            </div>
+          )}
+          {state === "minimized" && (
+            <div
+              className="px-3 py-2 hover:bg-blue-500/30 cursor-pointer"
+              onClick={() => {
+                restoreWindow(dockMenu.name);
+                setDockMenu(null);
+              }}
+            >
+              Show
+            </div>
+          )}
+          {state === "open" && (
+            <div
+              className="px-3 py-2 hover:bg-blue-500/30 cursor-pointer"
+              onClick={() => {
+                const name = dockMenu.name;
+                minimizeWindow(dockMenu.name)
+                setDockMenu(null);
+              }}
+            >
+              Hide
+            </div>
+          )}
+          {state !== "closed" && (
+            <div
+              className="px-3 py-2 hover:bg-red-500/30 cursor-pointer text-red-400"
+              onClick={() => {
+                closeWindow(dockMenu.name);
+                setDockMenu(null);
+              }}
+            >
+              Quit
+            </div>
+          )}
         </div>
       )}
     </>

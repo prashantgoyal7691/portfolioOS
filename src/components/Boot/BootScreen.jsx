@@ -4,7 +4,7 @@ function BootScreen({ onFinish }) {
 
   const [input, setInput] = useState("");
   const [history, setHistory] = useState([
-    "PrashantOS v1.0",
+    "portfolioOS v1.0",
     "Type 'boot' or 'start' to launch the desktop"
   ]);
 

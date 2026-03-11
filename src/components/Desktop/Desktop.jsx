@@ -11,6 +11,8 @@ import SkillsApp from "../../apps/SkillsApp";
 import ProjectsApp from "../../apps/ProjectsApp";
 import ContactApp from "../../apps/ContactApp";
 import EducationApp from "../../apps/EducationApp";
+import SongsApp from "../../apps/SongsApp";
+import FeedbackApp from "../../apps/FeedbackApp";
 
 function Desktop() {
   const [windows, setWindows] = useState([]);
@@ -28,6 +30,7 @@ function Desktop() {
       resume: { x: 0, y: 360 },
       contact: { x: 0, y: 450 },
       education: { x: 0, y: 540 },
+      songs: { x: 0, y: 630 },
     };
   });
 
@@ -48,6 +51,60 @@ function Desktop() {
       return prev.filter((m) => m.name !== name);
     });
   };
+  useEffect(() => {
+    const sortAsc = () => {
+      setIconPositions((prev) => {
+        const entries = Object.entries(prev).sort((a, b) =>
+          a[0].localeCompare(b[0]),
+        );
+
+        const updated = {};
+        entries.forEach(([key], index) => {
+          updated[key] = { x: 0, y: index * 90 };
+        });
+
+        return updated;
+      });
+    };
+
+    const sortDesc = () => {
+      setIconPositions((prev) => {
+        const entries = Object.entries(prev).sort((a, b) =>
+          b[0].localeCompare(a[0]),
+        );
+
+        const updated = {};
+        entries.forEach(([key], index) => {
+          updated[key] = { x: 0, y: index * 90 };
+        });
+
+        return updated;
+      });
+    };
+
+    const resetDefault = () => {
+      setIconPositions({
+        projects: { x: 10, y: 0 },
+        skills: { x: 10, y: 90 },
+        about: { x: 10, y: 180 },
+        terminal: { x: 10, y: 270 },
+        resume: { x: 10, y: 360 },
+        contact: { x: 10, y: 450 },
+        education: { x: 10, y: 540 },
+        songs: { x: 10, y: 630 },
+      });
+    };
+
+    window.addEventListener("icons-asc", sortAsc);
+    window.addEventListener("icons-desc", sortDesc);
+    window.addEventListener("icons-default", resetDefault);
+
+    return () => {
+      window.removeEventListener("icons-asc", sortAsc);
+      window.removeEventListener("icons-desc", sortDesc);
+      window.removeEventListener("icons-default", resetDefault);
+    };
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(
@@ -63,6 +120,7 @@ function Desktop() {
   const resumeRef = useRef(null);
   const contactRef = useRef(null);
   const educationRef = useRef(null);
+  const songsRef = useRef(null);
 
   const openWindow = (name) => {
     const alreadyOpen = windows.some((w) => w.name === name);
@@ -101,7 +159,6 @@ function Desktop() {
   return (
     <div className="h-screen w-full bg-[#050505] relative m-0">
       <MatrixBackground />
-      <MenuBar openWindow={openWindow} />
       <div className="absolute  w-full h-full m-0 p-10">
         <Draggable
           bounds="parent"
@@ -139,7 +196,6 @@ function Desktop() {
               type="folder"
               label="Skills"
               onOpen={() => openWindow("skills")}
-
             />
           </div>
         </Draggable>
@@ -237,9 +293,29 @@ function Desktop() {
         >
           <div ref={educationRef} className="absolute">
             <DesktopIcon
-              type="folder"
+              type="Info"
               label="Education"
               onOpen={() => openWindow("education")}
+            />
+          </div>
+        </Draggable>
+
+        <Draggable
+          bounds="parent"
+          nodeRef={songsRef}
+          position={iconPositions.songs}
+          onStop={(e, data) =>
+            setIconPositions((prev) => ({
+              ...prev,
+              songs: { x: data.x, y: data.y },
+            }))
+          }
+        >
+          <div ref={songsRef} className="absolute">
+            <DesktopIcon
+              type="songs"
+              label="Songs"
+              onOpen={() => openWindow("songs")}
             />
           </div>
         </Draggable>
@@ -369,6 +445,39 @@ function Desktop() {
           );
         }
 
+        if (win.name === "songs") {
+          return (
+            <Window
+              key={win.name}
+              title="Songs"
+              x={win.x}
+              y={win.y}
+              isFocused={index === windows.length - 1}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
+            >
+              <SongsApp />
+            </Window>
+          );
+        }
+        if (win.name === "feedback") {
+          return (
+            <Window
+              key={win.name}
+              title="Feedback"
+              x={win.x}
+              y={win.y}
+              isFocused={index === windows.length - 1}
+              onClose={() => closeWindow(win.name)}
+              onFocus={() => focusWindow(win.name)}
+              onMinimize={() => minimizeWindow(win.name)}
+            >
+              <FeedbackApp />
+            </Window>
+          );
+        }
+
         if (win.name === "system") {
           return (
             <Window
@@ -401,7 +510,9 @@ function Desktop() {
         windows={windows}
         restoreWindow={restoreWindow}
         closeWindow={closeWindow}
+        minimizeWindow={minimizeWindow}
       />
+      <MenuBar openWindow={openWindow}/>
     </div>
   );
 }

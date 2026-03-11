@@ -1,14 +1,4 @@
-import { useEffect, useState } from "react";
-
 function ProjectsApp() {
-  // const [projects, setProjects] = useState([]);
-
-  // useEffect(() => {
-  //   fetch("https://api.github.com/users/prashantgoyal7691/repos")
-  //     .then((res) => res.json())
-  //     .then((data) => setProjects(data));
-  // }, []);
-
   const githuburl = "https://github.com/prashantgoyal7691/";
 
   let arr2 = [
@@ -45,18 +35,20 @@ function ProjectsApp() {
     {
       uri: "Ludo-Dice-Game",
       desc: "A digital implementation of the classic Ludo board game with dice mechanics and interactive gameplay.",
-      view:"https://ludodice-game.netlify.app/"
+      view: "https://ludodice-game.netlify.app/",
     },
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {arr2.map((repo) => (
         <div
           key={repo.uri}
           className="p-4 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition"
         >
-          <h3 className="text-lg font-semibold">{`${repo.uri}`}</h3>
+          <h3 className="text-lg font-semibold flex items-center gap-2">
+            📁 {repo.uri.replaceAll("-", " ")}
+          </h3>
 
           <p className="text-gray-400 text-sm">
             {`${repo.desc}` || "No description"}
@@ -70,6 +62,7 @@ function ProjectsApp() {
             <a
               href={`${githuburl}${repo.uri}`}
               target="_blank"
+              rel="noopener noreferrer"
               className="text-blue-400 hover:underline"
             >
               GitHub

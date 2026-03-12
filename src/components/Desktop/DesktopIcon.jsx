@@ -1,5 +1,13 @@
 import { info } from "autoprefixer";
-import { Folder, TerminalWindow, MusicNotes, User, Envelope, FileText, GraduationCap } from "phosphor-react";
+import {
+  Folder,
+  TerminalWindow,
+  MusicNotes,
+  User,
+  Envelope,
+  FileText,
+  GraduationCap,
+} from "phosphor-react";
 
 function DesktopIcon({ type, label, onOpen }) {
   const iconMap = {
@@ -14,6 +22,11 @@ function DesktopIcon({ type, label, onOpen }) {
   return (
     <div
       onDoubleClick={onOpen}
+      onClick={(e) => {
+        if (window.innerWidth < 768) {
+          onOpen();
+        }
+      }}
       className="flex flex-col items-center cursor-pointer select-none hover:scale-110 transition duration-200"
     >
       <div className="text-white">{iconMap[type]}</div>

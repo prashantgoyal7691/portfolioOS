@@ -4,7 +4,7 @@ function BootScreen({ onFinish }) {
 
   const [input, setInput] = useState("");
   const [history, setHistory] = useState([
-    "portfolioOS v1.0",
+    "portfolioOS v2.0",
     "Type 'boot' or 'start' to launch the desktop"
   ]);
 
@@ -45,14 +45,6 @@ function BootScreen({ onFinish }) {
 
       <div className="flex mt-2">
         <span className="mr-2">{">"}</span>
-
-        {/* <input
-          autoFocus
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="bg-transparent outline-none text-green-400 w-full h-full"
-        /> */}
 
         <textarea
           autoFocus

@@ -4,33 +4,106 @@ const fileSystem = {
   "/": {
     type: "dir",
     children: {
-      about: {
+      "about.txt": {
         type: "file",
-        content: "Prashant Goyal\nCSE Student\nMERN + DSA enthusiast.",
+        content: `Prashant Goyal
+Computer Science Student
+NIT Srinagar
+
+Run:
+cat open-about.window`,
+
       },
+      "open-about.window": { type: "link", target: "about" },
+
+      "skills.txt": {
+        type: "file",
+        content: `Core Skills
+C++
+JavaScript
+React
+Node.js
+MongoDB
+
+Run:
+cat open-skills.window`,
+      },
+      "open-skills.window": { type: "link", target: "skills" },
+
+      "resume.txt": {
+        type: "file",
+        content: `Resume available.
+
+Run:
+cat open-resume.window`,
+      },
+
       projects: {
         type: "dir",
         children: {
-          "url-shortener.txt": {
+          "task-management-app.txt": {
             type: "file",
-            content: "URL Shortener built with Node.js and MongoDB.",
+            content: "A productivity web application for organizing tasks, setting priorities, and tracking progress efficiently.",
           },
-          "portfolio-os.txt": {
+          "billing-system.txt": {
             type: "file",
-            content: "This OS-style portfolio built with React.",
+            content: "Billing system application\nHandles invoice generation",
           },
+          "check-all-project.txt":{
+            type:"file",
+            content:`run
+cat see-other-projects`
+          },
+          "see-other-projects": { type: "link", target: "projects" },
         },
       },
-      skills: {
-        type: "file",
-        content: "C++\nJavaScript\nReact\nNode.js\nMongoDB\nDSA",
+
+      education: {
+        type: "dir",
+        children: {
+          "education-info": {
+            type: "file",
+            content: `Education Overview
+
+B.Tech — Computer Science
+NIT Srinagar
+
+For full details:
+cat open-education.window`,
+          },
+          "open-education.window": { type: "link", target: "education" },
+        },
       },
+
       contact: {
-        type: "file",
-        content: `Email: prashantgo7691@gmail.com
-LinkedIn: www.linkedin.com/in/prashantgoyal7691
-GitHub: github.com/prashantgoyal7691
-Instagram: www.instagram.com/prashant_goyal19`,
+        type: "dir",
+        children: {
+          "contact-info": {
+            type: "file",
+            content: `Email: prashantgo7691@gmail.com
+LinkedIn: linkedin.com/in/prashantgoyal7691
+
+Run:
+cat open-contact.window`,
+          },
+          "open-contact.window": { type: "link", target: "contact" },
+        },
+      },
+
+      songs: {
+        type: "dir",
+        children: {
+          "music-player": {
+            type: "file",
+            content: `PortfolioOS Music Player
+
+Use GUI player for controls.
+
+Run:
+cat open-songs.window`,
+          },
+          "open-songs.window": { type: "link", target: "songs" },
+        },
       },
     },
   },
@@ -69,11 +142,10 @@ function TerminalApp({ openWindow }) {
     };
   }, []);
 
-
   const getCurrentDir = () => {
     const parts = cwd.split("/").filter(Boolean);
     let node = fileSystem["/"];
-    for (let part of parts) node = node.children[part];
+    for (let p of parts) node = node.children[p];
     return node;
   };
 
@@ -84,7 +156,11 @@ function TerminalApp({ openWindow }) {
 
       if (command.trim() === "exit()" || command.trim() === "exit") {
         setMode("shell");
-        setHistory((prev) => [...prev, `>>> ${command}`, "Exiting Python shell..."]);
+        setHistory((prev) => [
+          ...prev,
+          `>>> ${command}`,
+          "Exiting Python shell...",
+        ]);
         return;
       }
 
@@ -103,7 +179,7 @@ function TerminalApp({ openWindow }) {
           const expr = command.slice(6, -1);
           const context = { ...pythonVars };
           const evaluatedExpr = expr.replace(/\b[a-zA-Z_]\w*\b/g, (name) =>
-            context[name] !== undefined ? JSON.stringify(context[name]) : name
+            context[name] !== undefined ? JSON.stringify(context[name]) : name,
           );
           const result = eval(evaluatedExpr);
           output = result;
@@ -111,8 +187,8 @@ function TerminalApp({ openWindow }) {
           const context = { ...pythonVars };
           const result = eval(
             command.replace(/\b[a-zA-Z_]\w*\b/g, (name) =>
-              context[name] !== undefined ? context[name] : name
-            )
+              context[name] !== undefined ? context[name] : name,
+            ),
           );
           output = result;
         }
@@ -125,26 +201,38 @@ function TerminalApp({ openWindow }) {
     }
 
     const parts = command.split(" ");
-    const cmd = parts[0];
-    const arg = parts[1];
+    const cmd = parts[0]?.toLowerCase();
+    const arg = parts[1]?.toLowerCase();
 
     let output = "";
 
     switch (cmd) {
       case "help":
-        output = `Commands:
-help
-ls
-cd
-pwd
-cat
-clear
-python`;
+        output = `Available Commands:
+
+help              Show available commands
+ls                List files and folders
+cd <folder>       Change directory
+cd ..             Go to parent directory
+cd /              Go to root directory
+pwd               Show current directory
+cat <file>        Read file or open linked window
+clear             Clear terminal screen
+python            Start simulated Python shell`;
         break;
 
       case "ls":
         const dir = getCurrentDir();
-        output = Object.keys(dir.children).join("   ");
+        if (!dir.children) {
+          output = "Empty directory";
+          break;
+        }
+        output = Object.entries(dir.children)
+          .filter(([name, node]) => node.type !== "link")
+          .map(([name, node]) =>
+            node.type === "dir" ? `📁 ${name}` : `📄 ${name}`
+          )
+          .join("\n");
         break;
 
       case "pwd":
@@ -156,9 +244,11 @@ python`;
           output = "Usage: cd <folder>";
           break;
         }
-
+        if (arg === "/") {
+          setCwd("/");
+          break;
+        }
         const current = getCurrentDir();
-
         if (arg === "..") {
           const parts = cwd.split("/").filter(Boolean);
           parts.pop();
@@ -175,11 +265,24 @@ python`;
         break;
 
       case "cat":
+        if (!arg) {
+          output = "Usage: cat <file>";
+          break;
+        }
         const node = getCurrentDir().children[arg];
-        if (node && node.type === "file") {
-          output = node.content;
-        } else {
+
+        if (!node) {
           output = "File not found";
+          break;
+        }
+
+        if (node.type === "file") {
+          output = node.content;
+        } else if (node.type === "link") {
+          openWindow(node.target);
+          output = `Opening ${node.target} window...`;
+        } else {
+          output = "Cannot cat a directory";
         }
         break;
 
@@ -187,31 +290,6 @@ python`;
         setHistory([]);
         return;
 
-      case "open":
-        if (arg === "resume") {
-          output = "opening resume window...";
-          openWindow("resume");
-          break;
-        } else if (arg === "contact") {
-          output = "opening contact window...";
-          openWindow("contact");
-          break;
-        } else if (arg === "skills") {
-          output = "opening skills window...";
-          openWindow("skills");
-          break;
-        } else if (arg === "about") {
-          output = "opening about window...";
-          openWindow("about");
-          break;
-        } else if (arg === "project") {
-          output = "opening project window...";
-          openWindow("project");
-          break;
-        }else {
-          output = "Permission denied.";
-        }
-        break;
 
       case "python":
         setMode("python");
@@ -224,7 +302,8 @@ python`;
         return;
 
       default:
-        output = "Command not found. Type 'help'.";
+        output = `Command not found: ${cmd}
+Type 'help' to see available commands.`;
     }
 
     setHistory((prev) => [...prev, `> ${command}`, output]);
@@ -286,14 +365,13 @@ python`;
         <span className="mr-2 text-green-300">
           {mode === "python" ? ">>>" : `portfolioOS:${cwd}$`}
         </span>
-      <input
+        <input
           ref={inputRef}
           className="bg-transparent outline-none flex-1"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-        
       </div>
     </div>
   );

@@ -1,131 +1,90 @@
-# portfolioOS
-A macOS-inspired interactive developer portfolio built with React.
-Instead of a traditional scrolling website, this portfolio behaves like a desktop operating system where users can open applications, interact with windows, and explore projects.
+# 🖥️ Portfolio OS — Interactive Desktop Portfolio
 
-The goal of this project is to showcase both frontend engineering skills and system design thinking through an immersive UI.
+A developer portfolio designed as a **desktop operating system simulation**, where users interact with apps, windows, and system UI instead of traditional web pages.
 
-⸻
+This project reflects a **system-oriented approach to frontend development**, focusing on structure, interaction, and modular design.
 
-Live Demo
+## 🚀 Overview
 
+Portfolio OS transforms a portfolio into a **desktop-like environment**:
 
-Features
+- Open apps like a real OS
+- Navigate using icons and dock
+- Interact with windows and UI components
 
-Desktop Environment
-	•	Draggable application icons
-	•	Persistent icon positions
-	•	macOS-style dock
-	•	Menu bar interface
+Instead of static sections, the portfolio behaves like a **mini operating system in the browser**.
 
-Window Management
-	•	Open multiple windows
-	•	Drag and reposition windows
-	•	Window focus system
-	•	Maximize / restore windows
-	•	Duplicate window functionality
-	•	Context menu (right-click / two-finger tap)
-	•	Auto-closing context menus
+## 🌐 Live Demo
 
-Interactive Applications
+👉 [https://portfolioospg.netlify.app]
 
-Inside the desktop you can open:
-About
-Skills
-Projects
-Education
-Contact
-Resume
-Terminal
+## ⚙️ Tech Stack
 
-Each section opens inside its own application window.
+- React (Vite)
+- Tailwind CSS
+- JavaScript
 
-Terminal Interface
+## ✨ Features
 
-Custom terminal built inside the portfolio.
+- 🖥️ Desktop-style UI
+- 🪟 Window-based application system
+- 📌 Dock navigation
+- 📊 Menu bar (clock, battery UI)
+- 🎵 Music system with global state
+- ⌨️ Terminal-style interactions
+- 🌌 Matrix-style animated background
+- ⚡ Modular app architecture
 
-Supports commands like:
-help
-ls
-cd
-open
-clear
-python
+  
+## 🧠 Architecture
 
-Includes a simulated Python shell for interaction.
+### 🔹 App-Based System
 
-Developer Experience
-	•	Matrix style animated background
-	•	Glassmorphism windows
-	•	Smooth UI animations
-	•	Dark developer-focused theme
+Each feature is built as an independent app:
 
-⸻
-Project Structure
-src
- ├── apps
- │   ├── AboutApp.jsx
- │   ├── SkillsApp.jsx
- │   ├── ProjectsApp.jsx
- │   ├── ContactApp.jsx
- │   ├── EducationApp.jsx
- │   └── TerminalApp.jsx
- │
- ├── components
- │   ├── Desktop
- │   ├── Window
- │   ├── Dock
- │   ├── MenuBar
- │   └── Background
- │
- └── App.jsx
+- About
+- Projects
+- Skills
+- Terminal
+- Music
 
-Installation
+This keeps the system modular and scalable.
 
-Clone the repository
-git clone https://github.com/prashantgoyal7691/prashant-portfolio.git
+### 🔹 Window Management
 
-Go to project folder
-cd prashant-portfolio
+All apps are rendered inside a reusable component:
 
-Install dependencies
+This simulates:
+- Opening apps
+- Switching views
+- Desktop-like interaction
+
+### 🔹 Global State (Music System)
+Used to manage:
+- Song playback
+- Shared state across components
+
+---
+
+### 🔹 UI Components
+
+- Desktop → Main environment  
+- Dock → App launcher  
+- MenuBar → System info (clock, battery)  
+- Background → Visual engine (Matrix effect)  
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+```bash--
+git clone https://github.com/prashantgoyal7691/portfolioOS.git
+cd portfolioOS
 npm install
-
-Run development server
 npm run dev
+```
 
-Why this Project?
-
-Most portfolios are simple static pages.
-This project explores a different idea:
-
-Turning a developer portfolio into a mini operating system interface.
-
-It demonstrates:
-	•	Advanced UI architecture
-	•	Component-based design
-	•	Interactive frontend systems
-	•	Creative problem solving
-
-
-Future Improvements
-
-Planned features:
-	•	Desktop right-click menu
-	•	Window resizing
-	•	Spotlight search
-	•	Dock magnification effect
-	•	GitHub project integration
-	•	Terminal filesystem simulation
-
-
-Author
-
+👨‍💻 Author
 Prashant Goyal
-Computer Science Student
-NIT Srinagar
-
-GitHub
-https://github.com/prashantgoyal7691
-
-LinkedIn
-https://www.linkedin.com/in/prashantgoyal7691
+	•	GitHub: https://github.com/prashantgoyal7691

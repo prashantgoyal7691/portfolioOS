@@ -402,11 +402,22 @@ function Desktop() {
               onFocus={() => focusWindow(win.name)}
               onMinimize={() => minimizeWindow(win.name)}
             >
-              <iframe
-                src="/resume.pdf#toolbar=0&navpanes=0&scrollbar=0"
-                className="w-full h-full border-none"
-                title="Resume"
-              />
+                            <div className="w-full h-full flex flex-col">
+                <div className="p-2 border-b border-white/10 flex justify-end">
+                  <a
+                    href="/resume.pdf"
+                    download
+                    className="px-3 py-1 text-sm bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/30 text-emerald-300 rounded"
+                  >
+                    Download Resume
+                  </a>
+                </div>
+                <iframe
+                  src="/resume.pdf#toolbar=0&navpanes=0&scrollbar=0"
+                  className="w-full flex-1 border-none"
+                  title="Resume"
+                />
+              </div>
             </Window>
           );
         }

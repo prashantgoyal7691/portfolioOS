@@ -506,7 +506,7 @@ function Desktop() {
                   portfolioOS
                 </h2>
 
-                <p>Version: 1.0</p>
+                <p>Version: 2.0</p>
                 <p>Developer: Prashant Goyal</p>
                 <p>Stack: React + Tailwind + Vite</p>
                 <p>UI: macOS Inspired Desktop Portfolio</p>

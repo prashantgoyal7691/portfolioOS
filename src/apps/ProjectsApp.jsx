@@ -7,6 +7,18 @@ function ProjectsApp() {
       desc: "A productivity web application for organizing tasks, setting priorities, and tracking progress efficiently.",
       view: "https://task-management-app-fae5c.web.app/",
     },
+    
+    {
+      uri: "mess-management",
+      desc: "Smart Mess Management System is a full-stack web application that digitizes hostel mess operations by enabling meal planning, feedback, complaint management, expense tracking, billing, and report generation through dedicated student and admin portals. Built using React, Node.js, Express, MongoDB Atlas, AWS, and Resend, it automates manual mess processes and improves operational efficiency.",
+      view: "https://mess-management-navy.vercel.app/",
+    },
+
+    {
+      uri: "fluxshare",
+      desc: "Built FluxShare, a secure temporary file-sharing platform using Next.js, Node.js, MongoDB, AWS S3, and Redis, featuring expiring links, signed URL downloads, download limits, and automatic cloud file deletion.",
+      view: "https://fluxshare.p19.in/",
+    },
 
     {
       uri: "stealth-escape",
